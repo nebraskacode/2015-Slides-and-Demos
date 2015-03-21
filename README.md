@@ -4,4 +4,4 @@ What an awwesome event!  Thanks to the speakers for providing such awesome conte
 
 ## Speakers
 
-Please fork the repository and add your slides and demos to a NEW FOLDER that identifies which session you are posting for.
+Please fork the repository and add your slides and demos to a NEW FOLDER that identifies which session you are posting for.  Then submit a pull request, and I will merge them in.
