@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Foo</title>
+<meta charset='utf-8' />
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<style type='text/css'>
+body {
+  font-family: 'Georgia', serif;
+  background:#fff;
+  background-size:100%;
+  color:#000;
+  margin:0;
+  padding:.5em;
+}
+
+h1, h2, h3, p {
+  margin:0;
+  font-weight:200;
+}
+
+p, li {
+  margin-bottom: .5em;
+}
+
+code {
+  font-family: "Menlo", monospace;
+  letter-spacing: 0;
+}
+
+em, i {
+  font-weight: 200;
+}
+
+strong, b {
+  font-weight: 400;
+}
+
+mark {
+  color: #007ba0;
+}
+
+a {
+  color: #007ba0;
+  text-decoration:none;
+}
+
+img {
+  width:100%;
+}
+
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+ol, ul {
+  list-style-type: none;
+  margin: 0.5em 0;
+  padding: 0;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-left: .5em;
+}
+
+ol li:before, ul li:before {
+  color: orange;
+}
+
+ol {
+  counter-reset: list -1;
+}
+
+ol li {
+  list-style-type: none;
+  counter-increment: list;
+}
+
+ol li:before {
+  content: counter(list, binary) " ";
+}
+
+ul li:before {
+  content: "- ";
+}
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+  -webkit-text-size-adjust: none;
+}
+
+.hljs-comment,
+.diff .hljs-header,
+.hljs-javadoc {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.css .rule .hljs-keyword,
+.hljs-winutils,
+.nginx .hljs-title,
+.hljs-subst,
+.hljs-request,
+.hljs-status {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-hexcolor,
+.ruby .hljs-constant {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-phpdoc,
+.hljs-dartdoc,
+.tex .hljs-formula {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-id,
+.scss .hljs-preprocessor {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-list .hljs-keyword,
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-class .hljs-title,
+.hljs-type,
+.vhdl .hljs-literal,
+.tex .hljs-command {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-tag .hljs-title,
+.hljs-rules .hljs-property,
+.django .hljs-tag .hljs-keyword {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body {
+  color: #008080;
+}
+
+.hljs-regexp {
+  color: #009926;
+}
+
+.hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.lisp .hljs-keyword,
+.clojure .hljs-keyword,
+.scheme .hljs-keyword,
+.tex .hljs-special,
+.hljs-prompt {
+  color: #990073;
+}
+
+.hljs-built_in {
+  color: #0086b3;
+}
+
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-pi,
+.hljs-doctype,
+.hljs-shebang,
+.hljs-cdata {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.diff .hljs-change {
+  background: #0086b3;
+}
+
+.hljs-chunk {
+  color: #aaa;
+}
+
+
+</style>
+<script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), cur = 0, ti;
+    if (!s) return;
+    function go(n) {
+        cur = n;
+        var i = 1e3, e = s[n], t;
+        document.body.className = e.dataset.bodyclass || '';
+        for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+        e.style.display = 'inline';
+        e.style.fontSize = i + 'px';
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url(' + e.firstChild.src + ')';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        t = parseInt(e.dataset.timeToNext || 0, 10);
+        if (t > 0) ti = window.setTimeout(fwd, (t * 1000));
+        while (
+            e.offsetWidth > window.innerWidth ||
+            e.offsetHeight > window.innerHeight) {
+            e.style.fontSize = (i -= 2) + 'px';
+            if (i < 0) break;
+        }
+        e.style.marginTop = ((window.innerHeight - e.offsetHeight) / 2) + 'px';
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    var full = false;
+    document.onclick = function() {
+        if(!full){
+            full = true;
+            fullscreen();
+        } else {
+            go(++cur % (s.length));
+        }
+    };
+    function fwd() { go(Math.min(s.length - 1, ++cur)); }
+    function rev() { go(Math.max(0, --cur)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e) {
+            var x1 = e.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(
+            s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) cur = parse_hash() || cur;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== cur) go(c);
+    };
+    function fullscreen() {
+      var element = document.documentElement;
+      // http://davidwalsh.name/fullscreen
+      if(element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if(element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    }
+    go(cur);
+};
+</script></head><body>
+<div><p>Transducers Explained</p>
+</div>
+<div><p>JavaScript Transducers in the Wild</p>
+<ul>
+<li>transducers-js</li>
+<li>transducers.js</li>
+<li>RxJs</li>
+<li>Highland</li>
+<li>Kefir.js</li>
+<li>js-csp</li>
+<li>transduce</li>
+<li>transduce-stream</li>
+<li>Ramda (soon)</li>
+<li>Most.js (soon)</li>
+<li>Bacon.js (soon)</li>
+<li>... likely more to come</li>
+</ul>
+</div>
+<div><p>Transducers are composable algorithmic transformations.</p>
+<p>They are independent from the context of their input and output sources and specify only the essence of the transformation in terms of an individual element.</p>
+<p>Because transducers are decoupled from input or output sources, they can be used in many different processes - collections, streams, channels, observables, etc.</p>
+<p>Transducers compose directly, without awareness of input or creation of intermediate aggregates.</p>
+<p><a href="http://clojure.org/transducers">http://clojure.org/transducers</a></p>
+</div>
+<div><p>Reducing Function</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sum</span><span class="hljs-params">(aggregate, element)</span></span>{
+  <span class="hljs-keyword">return</span> aggregate + element
+}
+
+<span class="hljs-keyword">var</span> output = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>].reduce(sum, <span class="hljs-number">1</span>)
+<span class="hljs-comment">// 10 (=1+2+3+4)</span>
+
+<span class="hljs-keyword">var</span> output = arrayReduce(sum, <span class="hljs-number">1</span>, [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>])
+<span class="hljs-comment">// 10 (=1+2+3+4)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(step, init, input)</span></span>{
+  <span class="hljs-comment">// Start with an initial aggregate</span>
+  <span class="hljs-keyword">var</span> aggregate = init
+
+  <span class="hljs-comment">// Input one element at a time, passing each result</span>
+  <span class="hljs-comment">// to next iteration using reducing function</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = step(aggregate, element)
+  }
+
+   <span class="hljs-comment">// Output last computed result</span>
+  <span class="hljs-keyword">return</span> aggregate
+}
+</code></pre>
+</div>
+<div><p>Reducing Function</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mult</span><span class="hljs-params">(aggregate, element)</span></span>{
+  <span class="hljs-keyword">return</span> aggregate * element
+}
+
+<span class="hljs-keyword">var</span> output = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>].reduce(mult, <span class="hljs-number">1</span>)
+<span class="hljs-comment">// 24 (=1*2*3*4)</span>
+
+<span class="hljs-keyword">var</span> output = arrayReduce(mult, <span class="hljs-number">1</span>, [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>])
+<span class="hljs-comment">// 24 (=1*2*3*4)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(step, init, input)</span></span>{
+  <span class="hljs-comment">// Start with an initial aggregate</span>
+  <span class="hljs-keyword">var</span> aggregate = init
+
+  <span class="hljs-comment">// Input one element at a time, passing each result</span>
+  <span class="hljs-comment">// to next iteration using reducing function</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = step(aggregate, element)
+  }
+
+   <span class="hljs-comment">// Output last computed result</span>
+  <span class="hljs-keyword">return</span> aggregate
+}
+</code></pre>
+</div>
+<div><p>Reducing Function</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mult</span><span class="hljs-params">(aggregate, element)</span></span>{
+  <span class="hljs-keyword">return</span> aggregate * element
+}
+
+<span class="hljs-keyword">var</span> output = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>].reduce(mult, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// 48 (=2*2*3*4)</span>
+
+<span class="hljs-keyword">var</span> output = arrayReduce(mult, <span class="hljs-number">2</span>, [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>])
+<span class="hljs-comment">// 48 (=2*2*3*4)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(step, init, input)</span></span>{
+  <span class="hljs-comment">// Start with an initial aggregate</span>
+  <span class="hljs-keyword">var</span> aggregate = init
+
+  <span class="hljs-comment">// Input one element at a time, passing each result</span>
+  <span class="hljs-comment">// to next iteration using reducing function</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = step(aggregate, element)
+  }
+
+   <span class="hljs-comment">// Output last computed result</span>
+  <span class="hljs-keyword">return</span> aggregate
+}
+</code></pre>
+</div>
+<div><p>Transformer</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transformer</span><span class="hljs-params">(reducingFunction)</span></span>{
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-comment">// Start with an initial aggregate</span>
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    },
+
+    <span class="hljs-comment">// Input one element at a time, passing each result</span>
+    <span class="hljs-comment">// to next iteration using reducing function</span>
+    step: reducingFunction,
+
+    <span class="hljs-comment">// Output last computed result</span>
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> aggregate
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Transformer</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Input source</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+
+<span class="hljs-comment">// Create transformer from reducing function</span>
+<span class="hljs-keyword">var</span> xf = transformer(sum)
+
+<span class="hljs-comment">// start with an initial aggregate</span>
+<span class="hljs-keyword">var</span> init = xf.init()
+
+<span class="hljs-comment">// reduce using step reducing function</span>
+<span class="hljs-keyword">var</span> aggregate = input.reduce(xf.step, init)
+
+<span class="hljs-comment">// Output last computed result</span>
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// output = 10 (=1+2+3+4)</span>
+</code></pre>
+</div>
+<div><p>Transformer</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Input source</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+
+<span class="hljs-comment">// Create transformer from reducing function</span>
+<span class="hljs-keyword">var</span> xf = transformer(mult)
+
+<span class="hljs-comment">// start with an initial aggregate</span>
+<span class="hljs-keyword">var</span> init = xf.init()
+
+<span class="hljs-comment">// reduce using step reducing function</span>
+<span class="hljs-keyword">var</span> aggregate = input.reduce(xf.step, init)
+
+<span class="hljs-comment">// Output last computed result</span>
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// output = 24 (=1*2*3*4)</span>
+</code></pre>
+</div>
+<div><p>Reduce with Functions and Transformers</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-comment">// wrap function as transformer if necessary</span>
+  xf = transformer(xf)
+  <span class="hljs-comment">// reduce using step function</span>
+  <span class="hljs-keyword">var</span> aggregate = input.reduce(xf.step, init)
+  <span class="hljs-comment">// extract result</span>
+  <span class="hljs-keyword">return</span> xf.result(aggregate)
+}
+</code></pre>
+</div>
+<div><p>Reduce with Functions and Transformers</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transformer</span><span class="hljs-params">(xf)</span></span>{
+  <span class="hljs-comment">// Assume we already have a transformer</span>
+  <span class="hljs-comment">// if not a function</span>
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> xf !== <span class="hljs-string">'function'</span>){
+    <span class="hljs-keyword">return</span> xf
+  }
+
+  <span class="hljs-comment">// wrap reducing function as transformer</span>
+  <span class="hljs-comment">// with init, step, result</span>
+  <span class="hljs-keyword">return</span> {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{},
+    step: xf,
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> aggregate
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Reduce with Transformers</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">2</span>
+<span class="hljs-keyword">var</span> xf = transformer(mult)
+<span class="hljs-keyword">var</span> output = reduce(xf, init, input)
+<span class="hljs-comment">// output = 48 (=2*2*3*4)</span>
+</code></pre>
+</div>
+<div><p>Reduce with Transformers</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">1</span>
+<span class="hljs-keyword">var</span> xf = transformer(sum)
+<span class="hljs-keyword">var</span> output = reduce(xf, init, input)
+<span class="hljs-comment">// output = 10 (=1+2+3+4)</span>
+</code></pre>
+</div>
+<div><p>Reduce with Functions</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">1</span>
+<span class="hljs-keyword">var</span> xf = sum
+<span class="hljs-keyword">var</span> output = reduce(xf, init, input)
+<span class="hljs-comment">// output = 10 (=1+2+3+4)</span>
+</code></pre>
+</div>
+<div><p>Reduce with Functions</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">2</span>
+<span class="hljs-keyword">var</span> xf = mult
+<span class="hljs-keyword">var</span> output = reduce(xf, init, input)
+<span class="hljs-comment">// output = 48 (=2*2*3*4)</span>
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">append</span><span class="hljs-params">(aggregate, element)</span></span>{
+  <span class="hljs-keyword">return</span> aggregate.concat([element])
+}
+
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = reduce(append, [], input)
+<span class="hljs-comment">// output = [2, 3, 4]</span>
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">plus1</span><span class="hljs-params">(element)</span></span>{
+  <span class="hljs-keyword">return</span> element + <span class="hljs-number">1</span>
+}
+
+<span class="hljs-keyword">var</span> xfplus1 = {
+  init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{},
+  step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+    <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+    <span class="hljs-keyword">return</span> append(aggregate, plus1ed)
+  },
+  result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+    <span class="hljs-keyword">return</span> aggregate
+  }
+}
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> xf = xfplus1
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// [3] (=append([], 2+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// [3,4] (=append([3], 3+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// [3,4,5] (=append([3,4], 4+1)))</span>
+
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Sum +1</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> output = reduce(sum, <span class="hljs-number">0</span>, output)
+<span class="hljs-comment">// 12 (=0+3+4+5)</span>
+<span class="hljs-comment">// But needed intermediate aggregate...</span>
+</code></pre>
+</div>
+<div><p>Sum +1</p>
+<pre><code class="lang-javascript">
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span>
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> sum(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> aggregate
+    }
+  }
+
+  <span class="hljs-comment">// sum of [el1 + 1, el2 + 1 ...]</span>
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript">
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span>
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> append(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> aggregate
+    }
+  }
+
+  <span class="hljs-comment">// array of [el1 + 1, el2 + 1 ...]</span>
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> step = append
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span>
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> step(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> aggregate
+    }
+  }
+
+  <span class="hljs-comment">// array of [el1 + 1, el2 + 1 ...]</span>
+</code></pre>
+</div>
+<div><p>Append +1</p>
+<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> xf = transformer(append)
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span> xf.init()
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> xf.step(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> xf.result(aggregate)
+    }
+  }
+
+  <span class="hljs-comment">// array of [el1 + 1, el2 + 1 ...]</span>
+</code></pre>
+</div>
+<div><p>Sum +1</p>
+<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> xf = transformer(sum)
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span> xf.init()
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> xf.step(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> xf.result(aggregate)
+    }
+  }
+
+  <span class="hljs-comment">// sum of [el1 + 1, el2 + 1 ...]</span>
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducerPlus1</span><span class="hljs-params">(xf)</span></span>{
+  <span class="hljs-keyword">var</span> xfplus1 = {
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+      <span class="hljs-keyword">return</span> xf.init()
+    },
+    step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+      <span class="hljs-keyword">var</span> plus1ed = plus1(element)
+      <span class="hljs-keyword">return</span> xf.step(aggregate, plus1ed)
+    },
+    result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+      <span class="hljs-keyword">return</span> xf.result(aggregate)
+    }
+  }
+  <span class="hljs-keyword">return</span> xfplus1
+}
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> transducer = transducerPlus1
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// [3] (=append([], 2+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// [3,4] (=append([3], 3+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// [3,4,5] (=append([3,4], 4+1)))</span>
+
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> baseXf = transformer(sum)
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> transducer = transducerPlus1
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// 3 (=sum(0, 2+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// 7 (=sum(3, 3+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// 12 (=sum(7, 4+1)))</span>
+
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// 12</span>
+</code></pre>
+</div>
+<div><p>Transducer +2</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">plus2</span><span class="hljs-params">(element)</span></span>{
+  <span class="hljs-keyword">return</span> element + <span class="hljs-number">2</span>
+}
+<span class="hljs-keyword">var</span> transducerPlus2 = ???
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript">
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = plus1(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+  <span class="hljs-comment">// transducerPlus1</span>
+</code></pre>
+</div>
+<div><p>Transducer +2</p>
+<pre><code class="lang-javascript">
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = plus2(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+  <span class="hljs-comment">// transducerPlus2</span>
+</code></pre>
+</div>
+<div><p>Transducer +2</p>
+<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> mappingFunction = plus2
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = mappingFunction(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+  <span class="hljs-comment">// transducerPlus2</span>
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> mappingFunction = plus1
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = mappingFunction(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+  <span class="hljs-comment">// transducerPlus1</span>
+</code></pre>
+</div>
+<div><p>Mapping Transducer</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">map</span><span class="hljs-params">(mappingFunction)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = mappingFunction(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Transducer +2</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus2)
+<span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// [4] (=append([], 2+2)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// [4,5] (=append([4], 3+2)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// [4,5,6] (=append([4,5], 4+2)))</span>
+
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// [4,5,6]</span>
+</code></pre>
+</div>
+<div><p>Transducer +1</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// [3] (=append([], 2+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// [3,4] (=append([3], 3+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// [3,4,5] (=append([3,4], 4+1)))</span>
+
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Create a transducer and compatible</span>
+<span class="hljs-comment">// base transformer and initial aggregate</span>
+<span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> init = []
+
+<span class="hljs-comment">// Initialize the transducer with base</span>
+<span class="hljs-comment">// transformer to get new transformer</span>
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+
+<span class="hljs-comment">// Step through each input element</span>
+<span class="hljs-comment">// using the reducing function</span>
+<span class="hljs-keyword">var</span> aggregate = xf.step(init, <span class="hljs-number">2</span>)
+<span class="hljs-comment">// [3] (=append([], 2+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">3</span>)
+<span class="hljs-comment">// [3,4] (=append([3], 3+1)))</span>
+
+aggregate = xf.step(aggregate, <span class="hljs-number">4</span>)
+<span class="hljs-comment">// [3,4,5] (=append([3,4], 4+1)))</span>
+
+<span class="hljs-comment">// Finalize to output using result</span>
+<span class="hljs-keyword">var</span> output = xf.result(aggregate)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Create a transducer and compatible</span>
+<span class="hljs-comment">// base transformer and initial aggregate</span>
+<span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> init = []
+
+<span class="hljs-comment">// Initialize the transducer with base</span>
+<span class="hljs-comment">// transformer to get new transformer</span>
+<span class="hljs-keyword">var</span> xf = transducer(baseXf)
+
+<span class="hljs-comment">// Step through each input element</span>
+<span class="hljs-comment">// using the reducing function</span>
+<span class="hljs-comment">// var aggregate = xf.step(init, 2)</span>
+<span class="hljs-comment">// [3] (=append([], 2+1)))</span>
+
+<span class="hljs-comment">// aggregate = xf.step(aggregate, 3)</span>
+<span class="hljs-comment">// [3,4] (=append([3], 3+1)))</span>
+
+<span class="hljs-comment">// aggregate = xf.step(aggregate, 4)</span>
+<span class="hljs-comment">// [3,4,5] (=append([3,4], 4+1)))</span>
+
+<span class="hljs-comment">// Finalize to output using result</span>
+<span class="hljs-keyword">var</span> output = reduce(xf, init, [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>])
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Create a transducer and compatible</span>
+<span class="hljs-comment">// base transformer and initial aggregate</span>
+<span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = transformer(append)
+<span class="hljs-keyword">var</span> init = []
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-comment">// initialize transducer with base transformer</span>
+  <span class="hljs-keyword">var</span> xf = transducer(baseXf)
+
+  <span class="hljs-comment">// Reduce result over input</span>
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-comment">// Transduce result over input</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Create a transducer and compatible</span>
+<span class="hljs-comment">// base transformer and initial aggregate</span>
+<span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-comment">// initialize transducer with base transformer</span>
+  <span class="hljs-keyword">var</span> xf = transducer(transformer(baseXf))
+
+  <span class="hljs-comment">// Reduce result over input</span>
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-comment">// Transduce result over input</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus2)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [4,5,6]</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = sum
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// 12 (=3+4+5)</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus2)
+<span class="hljs-keyword">var</span> baseXf = sum
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// 15 (=4+5+6)</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus1)
+<span class="hljs-keyword">var</span> baseXf = mult
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">1</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// 60 (=3*4*5)</span>
+</code></pre>
+</div>
+<div><p>Transduce</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = map(plus2)
+<span class="hljs-keyword">var</span> baseXf = mult
+<span class="hljs-keyword">var</span> init = <span class="hljs-number">1</span>
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// 120 (=4*5*6)</span>
+</code></pre>
+</div>
+<div><p>Transducer +3</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">plus3</span><span class="hljs-params">(element)</span></span>{
+  <span class="hljs-keyword">return</span> element + <span class="hljs-number">3</span>
+}
+<span class="hljs-keyword">var</span> transducerPlus3 = ???
+</code></pre>
+</div>
+<div><p>Transducer +3</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducerPlus3 = map(plus3)
+</code></pre>
+</div>
+<div><p>Transducer +3</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> plus3 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+  <span class="hljs-keyword">var</span> value2 = plus2(value)
+  <span class="hljs-keyword">var</span> value1 = plus1(value2)
+  <span class="hljs-keyword">return</span> value1
+}
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compose2</span><span class="hljs-params">(f, g)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f_after_g</span><span class="hljs-params">(value)</span></span>{
+    <span class="hljs-keyword">var</span> valueG = g(value)
+    <span class="hljs-keyword">var</span> valueF = f(valueG)
+    <span class="hljs-keyword">return</span> valueF
+    <span class="hljs-comment">// return f(g(value))</span>
+  }
+}
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> plus3 = compose2(plus1, plus2)
+
+<span class="hljs-keyword">var</span> output = [plus3(<span class="hljs-number">2</span>), plus3(<span class="hljs-number">3</span>), plus3(<span class="hljs-number">4</span>)]
+<span class="hljs-comment">// [5,6,7]</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducerPlus3 = map(plus3)
+<span class="hljs-keyword">var</span> transducer = transducerPlus3
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [5,6,7]</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducerPlus3 = map(compose2(plus1, plus2))
+<span class="hljs-keyword">var</span> transducer = transducerPlus3
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [5,6,7]</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducerPlus3 = compose2(map(plus1), map(plus2))
+<span class="hljs-keyword">var</span> transducer = transducerPlus3
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [5,6,7]</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducerPlus1 = map(plus1)
+<span class="hljs-keyword">var</span> transducerPlus2 = map(plus2)
+<span class="hljs-keyword">var</span> transducerPlus3 = compose2(transducerPlus1, transducerPlus2)
+<span class="hljs-keyword">var</span> transducerPlus4 = compose2(transducerPlus3, transducerPlus1)
+<span class="hljs-keyword">var</span> transducer = transducerPlus4
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [6,7,8]</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compose</span><span class="hljs-params">(<span class="hljs-comment">/*fns*/</span>)</span></span>{
+  <span class="hljs-keyword">var</span> fns = <span class="hljs-built_in">arguments</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">var</span> i = fns.length - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span>(; i &gt;= <span class="hljs-number">0</span>; i--){
+      xf = fns[i](xf)
+    }
+    <span class="hljs-keyword">return</span> xf
+  }
+}
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> value = plus1(plus1(plus2(<span class="hljs-number">5</span>)))
+<span class="hljs-comment">// 9</span>
+
+<span class="hljs-keyword">var</span> value = compose(plus1, plus1, plus2)(<span class="hljs-number">5</span>)
+<span class="hljs-comment">// 9</span>
+</code></pre>
+</div>
+<div><p>Composition</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = compose(
+      map(plus1),  <span class="hljs-comment">// [3,4,5]</span>
+      map(plus2),  <span class="hljs-comment">// [5,6,7]</span>
+      map(plus1),  <span class="hljs-comment">// [6,7,8]</span>
+      map(plus1))  <span class="hljs-comment">// [7,8,9]</span>
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [7,8,9]</span>
+</code></pre>
+</div>
+<div><p>Filter</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isOdd</span><span class="hljs-params">(num)</span></span>{
+  <span class="hljs-keyword">return</span> num % <span class="hljs-number">2</span> === <span class="hljs-number">1</span>
+}
+<span class="hljs-keyword">var</span> transducer = filter(isOdd)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [1,3,5]</span>
+</code></pre>
+</div>
+<div><p>Map</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">map</span><span class="hljs-params">(f)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> mapped = f(element)
+        <span class="hljs-keyword">return</span> xf.step(aggregate, mapped)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Filter</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span><span class="hljs-params">(predicate)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">var</span> allow = predicate(element)
+        <span class="hljs-keyword">if</span>(allow){
+          aggregate = xf.step(aggregate, element)
+        }
+        <span class="hljs-keyword">return</span> aggregate
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Pipeline order</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = compose(
+      map(plus1),         <span class="hljs-comment">// [2,3,4,5,6]</span>
+      filter(isOdd))      <span class="hljs-comment">// [3,5]</span>
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,5]</span>
+</code></pre>
+</div>
+<div><p>Pipeline order</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = compose(
+      filter(isOdd),      <span class="hljs-comment">// [1,3,5]</span>
+      map(plus1))         <span class="hljs-comment">// [2,4,6]</span>
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [2,4,6]</span>
+</code></pre>
+</div>
+<div><p>Drop</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = drop(<span class="hljs-number">2</span>)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,4,5]</span>
+</code></pre>
+</div>
+<div><p>Drop</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drop</span><span class="hljs-params">(n)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">var</span> left = n
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-keyword">if</span>(left &gt; <span class="hljs-number">0</span>){
+          left--
+        } <span class="hljs-keyword">else</span> {
+          aggregate = xf.step(aggregate, element)
+        }
+        <span class="hljs-keyword">return</span> aggregate
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Take</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = take(<span class="hljs-number">3</span>)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [1,2,3]</span>
+</code></pre>
+</div>
+<div><p>Take</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">take</span><span class="hljs-params">(n)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">var</span> left = n
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        aggregate = xf.step(aggregate, element)
+        <span class="hljs-keyword">if</span>(--left &lt;= <span class="hljs-number">0</span>){
+          <span class="hljs-comment">// how do we stop???</span>
+        }
+        <span class="hljs-keyword">return</span> aggregate
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Reduce Redux</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> xf = transducer(transformer(baseXf))
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  xf = transformer(xf)
+
+  <span class="hljs-comment">// how do we stop??</span>
+  <span class="hljs-keyword">var</span> aggregate = input.reduce(xf.step, init)
+  <span class="hljs-keyword">return</span> xf.result(aggregate)
+}
+</code></pre>
+</div>
+<div><p>Reduce Redux</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> xf = transducer(transformer(baseXf))
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">return</span> arrayReduce(transformer(xf), init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> aggregate = init
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = xf.step(aggregate, element)
+    <span class="hljs-comment">// We need to break here, but how do we know?</span>
+  }
+  <span class="hljs-keyword">return</span> xf.result(aggregate)
+}
+</code></pre>
+</div>
+<div><p>Reduce Redux</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduced</span><span class="hljs-params">(aggregate)</span></span>{
+  <span class="hljs-keyword">return</span> {
+    value: aggregate,
+    __transducers_reduced__: <span class="hljs-literal">true</span>
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isReduced</span><span class="hljs-params">(aggregate)</span></span>{
+  <span class="hljs-keyword">return</span> aggregate &amp;&amp; aggregate.__transducers_reduced__
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deref</span><span class="hljs-params">(reducedAggregate)</span></span>{
+  <span class="hljs-keyword">return</span> reducedAggregate.value
+}
+</code></pre>
+</div>
+<div><p>Reduce Redux</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> xf = transducer(transformer(baseXf))
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">return</span> arrayReduce(transformer(xf), init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> aggregate = init
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = xf.step(aggregate, element)
+    <span class="hljs-keyword">if</span>(isReduced(aggregate)){
+      aggregate = deref(aggregate)
+      <span class="hljs-keyword">break</span>
+    }
+  }
+  <span class="hljs-keyword">return</span> xf.result(aggregate)
+}
+</code></pre>
+</div>
+<div><p>Take 2</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">take</span><span class="hljs-params">(n)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf)</span></span>{
+    <span class="hljs-keyword">var</span> left = n
+    <span class="hljs-keyword">return</span> {
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate, element)</span></span>{
+        aggregate = xf.step(aggregate, element)
+        <span class="hljs-keyword">if</span>(--left &lt;= <span class="hljs-number">0</span>){
+          <span class="hljs-comment">// we are done, so signal reduced</span>
+          <span class="hljs-keyword">return</span> reduced(aggregate)
+        }
+        <span class="hljs-keyword">return</span> aggregate
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>Take 2</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = take(<span class="hljs-number">3</span>)
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [1,2,3]</span>
+</code></pre>
+</div>
+<div><p>Take 2</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> transducer = compose(
+    drop(<span class="hljs-number">1</span>),    <span class="hljs-comment">// [2,3,4,5]</span>
+    take(<span class="hljs-number">3</span>),    <span class="hljs-comment">// [2,3,4]</span>
+    drop(<span class="hljs-number">1</span>))    <span class="hljs-comment">// [3,4]</span>
+<span class="hljs-keyword">var</span> baseXf = append
+<span class="hljs-keyword">var</span> init = []
+<span class="hljs-keyword">var</span> input = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-keyword">var</span> output = transduce(transducer, baseXf, init, input)
+<span class="hljs-comment">// [3,4]</span>
+</code></pre>
+</div>
+<div><p>In Review</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducerFactory</span><span class="hljs-params">(<span class="hljs-comment">/*factory args*/</span>)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transducer</span><span class="hljs-params">(xf<span class="hljs-comment">/*:transformer*/</span>)</span></span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-comment">/* transformed transformer */</span>{
+      init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initialAggregate</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">return</span> xf.init()
+      },
+      step: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reducing</span><span class="hljs-params">(aggregate, element)</span></span>{
+        <span class="hljs-comment">// Optionally:</span>
+        <span class="hljs-comment">//   1. Step to wrapped transformer</span>
+        <span class="hljs-comment">//   2. Transform element</span>
+        <span class="hljs-comment">//   3. Terminate with reduced</span>
+        <span class="hljs-comment">//</span>
+        <span class="hljs-comment">// Aggregate is off limits</span>
+        <span class="hljs-comment">// Pass all the way to baseXf</span>
+        <span class="hljs-keyword">return</span> xf.step(aggregate, element)
+      },
+      result: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resultExtraction</span><span class="hljs-params">(aggregate)</span></span>{
+        <span class="hljs-comment">// Optionally cleanup</span>
+        <span class="hljs-comment">// Must check for reduced if stepped</span>
+        <span class="hljs-comment">// Should call result on nested transformer.</span>
+        <span class="hljs-keyword">return</span> xf.result(aggregate)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<div><p>In Review</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transduce</span><span class="hljs-params">(transducer, baseXf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> xf = transducer(transformer(baseXf))
+  <span class="hljs-keyword">return</span> reduce(xf, init, input)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">return</span> arrayReduce(transformer(xf), init, input)
+  <span class="hljs-comment">// or objectReduce, iteratorReduce</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arrayReduce</span><span class="hljs-params">(xf, init, input)</span></span>{
+  <span class="hljs-keyword">var</span> aggregate = init
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> idx = <span class="hljs-number">0</span>; idx &lt; input.length; idx++){
+    <span class="hljs-keyword">var</span> element = input[idx]
+    aggregate = xf.step(aggregate, element)
+    <span class="hljs-keyword">if</span>(isReduced(aggregate)){
+      aggregate = deref(aggregate)
+      <span class="hljs-keyword">break</span>
+    }
+  }
+  <span class="hljs-keyword">return</span> xf.result(aggregate)
+}
+</code></pre>
+</div>
+<div><p>Transducers are composable algorithmic transformations.</p>
+<p>They are independent from the context of their input and output sources and specify only the essence of the transformation in terms of an individual element.</p>
+<p>Because transducers are decoupled from input or output sources, they can be used in many different processes - collections, streams, channels, observables, etc.</p>
+<p>Transducers compose directly, without awareness of input or creation of intermediate aggregates.</p>
+<p><a href="http://clojure.org/transducers">http://clojure.org/transducers</a></p>
+</div>
+<div><p>Transducers Explained</p>
+<ul>
+<li><a href="https://github.com/kevinbeaty">https://github.com/kevinbeaty</a></li>
+<li><a href="https://github.com/transduce">https://github.com/transduce</a></li>
+<li><a href="http://simplectic.com/blog/">http://simplectic.com/blog/</a></li>
+<li>Twitter: @simplectic</li>
+</ul>
+</div>
