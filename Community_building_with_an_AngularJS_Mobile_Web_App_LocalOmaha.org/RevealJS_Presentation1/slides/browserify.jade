@@ -1,0 +1,76 @@
+section
+  h2 Where I Started
+  h3 
+   a(https://github.com/angular/angular-seed) "angular-seed" project
+  ul
+    li Bundle AngularJS components with bower/npm
+    li Undesirable/unmaintainable list of script includes
+  h3 index.html
+  pre
+    include browserify/1a
+
+section
+  ul
+    li Prototyping to get the job started
+    li AngularJS dependency injection
+    li Global functions for non Angular functionality
+  h3 latlon.js
+    pre
+      include browserify/1b
+
+
+section
+  // slide 1c
+  h2 Browserify with Nick Nisi
+  ul
+    li
+      a(href="https://github.com/basti1302/angular-browserify",target="_blank") AngularJS + Browserify Project Template
+  h3 index.html
+    pre
+      code(data-trim, contenteditable)
+        &lt;script src=&quot;dist/app.js&quot;&gt;&lt;/script&gt;&lt;/body&gt;
+    li app.js
+      // Let's try an include here.
+      pre
+        include browserify/1c
+//TODO: Make this comment into speaker notes, see
+// https://github.com/hakimel/reveal.js#speaker-notes
+//  Browsers don't have the require method defined, but Node.js does. I was familiar with Browserify from the work I do at Aviture, and I had read that using RequireJS with an Angular project can be painful. So I chose Browserify, and I figured Nick would be able to help me with it because he's pretty much a JavaScript rockstar. *BUT* neither Nick or I knew how to configure it. Enter the AngularJS + Browserify Project Template.
+  With Browserify you can write code that uses require in the same way that you would use it in Node. Browserify bundles your requires into a single script file and source map. (And if you want to learn more about source maps, you should go to NebraskaJS in Omaha next month where Matt Steele, another Omaha JavaScriot rockstar, will tell you all about them.) You can use browserify to organize your code and use third-party libraries even if you don't use node itself in any other capacity except for bundling and installing packages with npm.
+
+
+section
+  // slide 1d
+  h2 desirable === CommonJS require
+  ul
+    li The Angular components became JavaScript modules.  
+    li We included them with require.
+  h3 localOmaha/index.js
+      pre
+        include browserify/1d
+
+
+section
+  // slide 1e
+  h2 Directives are defined as modules
+      pre
+        include browserify/1e
+
+
+section
+  // slide 1f
+  h2 latlon module
+  h3 latlon/index.js
+      pre
+        include browserify/1f
+
+section
+  // slide 1f2
+  h2 Using the module in an AngularJS controller
+      pre
+        include browserify/1f2
+//TODO: Make this comment into speaker notes
+// I had wanted to bundle geodesy in with the app. Nick and I looked through the library. And well, if you've ever been to a hackathon, you might know that it's great for brainstorming and getting some quick things done. But often what you end up with is something that works along with some great ideas to expand on later. So instead of using geodesy, we made latlon.js into a module instead. It just seemed easier because we weren't too familiar with the geodesy library, and we already had something that worked.
+
+
+

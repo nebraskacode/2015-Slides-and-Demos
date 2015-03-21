@@ -1,0 +1,8 @@
+code(data-trim, contenteditable).
+  context.addRoutes(new RouteBuilder() {
+    public void configure() {
+      Processor processor=new MattProcessorForJetty();
+      from("jetty:http://0.0.0.0:9876/myapp?matchOnUriPrefix=true")
+        .process(processor).to("file:data/outbox");
+    }
+  });
