@@ -1,0 +1,21 @@
+code(data-trim, contenteditable).
+     1    require 'nokogiri'
+     2    require 'open-uri'
+     3    require_relative 'store' # Many thanks Carl Z!
+     5    DIRECTORY='http://shoplocalomaha.com/Directory'
+     7    lstStores=[]
+     8    dir_html = Nokogiri::HTML.parse(open(DIRECTORY))
+     9    id=1
+     10   dir_html.css('a.open_profile_page').each do |merchant_link|
+     11      profile_url=merchant_link.attr('href')
+     12      profile_html=Nokogiri::HTML.parse(open(profile_url))
+     13      name=profile_html.css('h2.title').text
+     14      category=profile_html.css('p.category_name').text
+     15      address=profile_html.css('p.address').text
+     16      phone=profile_html.css('p.phone').text
+     17      facebook=profile_html.css('a.facebook')
+     20      storeUrl=profile_html.css('p.site')
+     21      storeUrl=storeUrl.text if !storeUrl.nil?
+     23      lstStores << Store.new(id,name,profile_url, category,address,phone,facebook,storeUrl)
+     27      id=id+1
+     28   end

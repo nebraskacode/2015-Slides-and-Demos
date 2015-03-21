@@ -1,0 +1,6 @@
+code(data-trim, contenteditable).
+     31	output = File.open("stores.json", "w")
+     32	output <<  lstStores.to_json
+     33	output.close
+     34	  
+     35	puts "Normal termination."

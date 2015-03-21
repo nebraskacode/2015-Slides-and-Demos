@@ -1,0 +1,13 @@
+code(data-trim, contenteditable).
+    var app = angular.module('localOmaha');
+
+    app.controller('localOmahaBusinessList', require('./local.omaha.business.list'));
+    app.controller('localOmahaCompass', require('./local.omaha.compass'));
+
+    app.directive('localOmahaBusinessThumbnail', require('./local.omaha.business.thumbnail'));
+
+    app.factory('localOmahaResource', require('./local.omaha.resource'));
+    app.factory('localOmahaService', require('./local.omaha.service'));
+    app.factory('localOmahaUserLocation', require('./local.omaha.user.location'));
+
+
