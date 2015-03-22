@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Leaflet Demo - stage 3</title>
+    <link rel="stylesheet" href="../css/leaflet.css" />
+    <script src="../js/leaflet.js"></script>
+</head>
+<body>
+<div id="map" style="height: 600px"></div>
+<script>
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+    var map = L.map('map').setView([39.034672, -94.587095], 15).addLayer(osm);
+
+    L.marker([39.034672, -94.587095])
+            .addTo(map)
+            .bindPopup('<span style="color: #b71e43; font-weight: bold">South Plaza</span><br /><span style="color: #000000; font-weight:bold">816-561-5100</span><br />5105 Main Street<br />Kansas City, MO 64112')
+            .openPopup();
+    var deliveryArea = L.polygon([
+        [39.063267, -94.571687],
+        [38.991554, -94.575668],
+        [38.99328, -94.630396],
+        [39.025985, -94.630423],
+        [39.026252, -94.627748],
+        [39.027435, -94.627286],
+        [39.028952, -94.625849],
+        [39.032919, -94.625891],
+        [39.033536, -94.621235],
+        [39.052502, -94.621321],
+        [39.057201, -94.623038],
+        [39.061949, -94.625548],
+        [39.064881, -94.621772],
+        [39.064665, -94.613038]
+    ]).addTo(map);
+    map.fitBounds(deliveryArea.getBounds());
+</script>
+</body>
+</html>

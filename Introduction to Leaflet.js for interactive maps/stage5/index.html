@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Leaflet Demo - stage 5</title>
+    <link rel="stylesheet" href="../css/leaflet.css" />
+    <script src="../js/leaflet.js"></script>
+    <script src="//maps.google.com/maps/api/js?v=3&sensor=false"></script>
+    <script src="//raw.githubusercontent.com/shramov/leaflet-plugins/v1.2.0/layer/tile/Google.js"></script>
+</head>
+<body>
+<div id="map" style="height: 600px"></div>
+<script>
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+    var mqSubdomains = ['otile1', 'otile2', 'otile3', 'otile4'],
+            mqTileUrlPrefix = window.location.protocol !== 'https:' ? 'http://{s}' : 'https://{s}-s',
+    // OSM Tiles attribution
+            osmTileAttr = 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
+            osmMapOpt = {
+                attribution: osmTileAttr,
+                maxNativeZoom: 18,
+                maxZoom: 21,
+                subdomains: mqSubdomains
+            };
+    var mapQuestOsm = L.tileLayer(mqTileUrlPrefix + '.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', osmMapOpt);
+
+    // Open Aerial Tiles attribution
+    var oaTileAttr = 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, ' +
+                    'Farm Service Agency, Tiles Courtesy of MapQuest',
+            oaMapOpt = {
+                attribution: oaTileAttr,
+                maxNativeZoom: 18,
+                maxZoom: 21,
+                subdomains: mqSubdomains
+            };
+    var mapQuestOa = L.tileLayer(mqTileUrlPrefix + '.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', oaMapOpt);
+
+    var cdbHttpPrefix = 'http://{s}.basemaps.cartocdn.com',
+            cdbHttpsPrefix = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net',
+            cdbTileUrlPrefix = window.location.protocol !== 'https:' ? cdbHttpPrefix : cdbHttpsPrefix,
+            cdbMapOpt = {attribution: '&copy; OpenStreetMap contributors, &copy; CartoDB'};
+    var cartoPositron = L.tileLayer(cdbTileUrlPrefix + '/light_all/{z}/{x}/{y}.png', cdbMapOpt);
+    var cartoPositronNoLabels = L.tileLayer(cdbTileUrlPrefix + '/light_nolabels/{z}/{x}/{y}.png', cdbMapOpt);
+    var cartoDarkMatter = L.tileLayer(cdbTileUrlPrefix + '/dark_all/{z}/{x}/{y}.png', cdbMapOpt);
+    var cartoDarkMatterNoLabels = L.tileLayer(cdbTileUrlPrefix + '/dark_nolabels/{z}/{x}/{y}.png', cdbMapOpt);
+
+    var esriSubdomains = ['server', 'services'],
+            esriTilePrefix = window.location.protocol + '//{s}.arcgisonline.com/ArcGIS/rest/services/',
+            esriTileSuffix = '/MapServer/tile/{z}/{y}/{x}';
+    var esriStreets = L.tileLayer(esriTilePrefix + 'World_Street_Map' + esriTileSuffix, {
+        attribution: 'Esri',
+        minZoom: 1,
+        maxZoom: 19,
+        subdomains: esriSubdomains
+    });
+    var esriTopographic = L.tileLayer(esriTilePrefix + 'World_Topo_Map' + esriTileSuffix, {
+        attribution: 'Esri',
+        minZoom: 1,
+        maxZoom: 19,
+        subdomains: esriSubdomains
+    });
+    var esriNationalGeographic = L.tileLayer(esriTilePrefix + 'NatGeo_World_Map' + esriTileSuffix, {
+        attribution: 'Esri',
+        minZoom: 1,
+        maxZoom: 16,
+        subdomains: esriSubdomains
+    });
+    var esriImagery = L.tileLayer(esriTilePrefix + 'World_Imagery' + esriTileSuffix, {
+        attribution: 'Esri, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community',
+        minZoom: 1,
+        maxZoom: 19,
+        subdomains: esriSubdomains
+    });
+    var esriShadedRelief = L.tileLayer(esriTilePrefix + 'World_Shaded_Relief' + esriTileSuffix, {
+        attribution: 'Esri, NAVTEQ, DeLorme',
+        minZoom: 1,
+        maxZoom: 13,
+        subdomains: esriSubdomains
+    });
+    var esriTerrain = L.tileLayer(esriTilePrefix + 'World_Terrain_Base' + esriTileSuffix, {
+        attribution: 'Esri, USGS, NOAA',
+        minZoom: 1,
+        maxZoom: 13,
+        subdomains: esriSubdomains
+    });
+
+    var stamenSubdomains = ['a', 'b', 'c', 'd'],
+            stamenTilePrefix = window.location.protocol !== 'https:' ? 'http://{s}.tile.stamen.com/' : 'https://stamen-tiles-{s}.a.ssl.fastly.net/',
+            stamenTileSuffix = '/{z}/{x}/{y}.',
+            stamenAttr = 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ' +
+                         'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
+                         'Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, ' +
+                         'under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.';
+    var stamenToner = L.tileLayer(stamenTilePrefix + 'toner' + stamenTileSuffix + 'png', {
+        attribution: stamenAttr,
+        minZoom: 0,
+        maxZoom: 20
+    });
+    var stamenTonerHybrid = L.tileLayer(stamenTilePrefix + 'toner-hybrid' + stamenTileSuffix + 'png', {
+        attribution: stamenAttr,
+        minZoom: 0,
+        maxZoom: 20
+    });
+    var stamenTonerLite = L.tileLayer(stamenTilePrefix + 'toner-lite' + stamenTileSuffix + 'png', {
+        attribution: stamenAttr,
+        minZoom: 0,
+        maxZoom: 20
+    });
+    var stamenTerrain = L.tileLayer(stamenTilePrefix + 'terrain' + stamenTileSuffix + 'jpg', {
+        attribution: stamenAttr,
+        minZoom: 4,
+        maxZoom: 18
+    });
+    var stamenWatercolor = L.tileLayer(stamenTilePrefix + 'watercolor' + stamenTileSuffix + 'jpg', {
+        attribution: stamenAttr,
+        minZoom: 1,
+        maxZoom: 18
+    });
+
+    var googleSatellite = new L.Google('SATELLITE');
+    var googleRoadmap = new L.Google('ROADMAP');
+    var googleHybrid = new L.Google('HYBRID');
+    var googleTerrain = new L.Google('TERRAIN');
+
+    var map = L.map('map', {
+        center: [39.034672, -94.587095],
+        zoom: 15,
+        layers: [osm]
+    });
+
+    L.marker([39.034672, -94.587095])
+            .addTo(map)
+            .bindPopup('<span style="color: #b71e43; font-weight: bold">South Plaza</span><br /><span style="color: #000000; font-weight:bold">816-561-5100</span><br />5105 Main Street<br />Kansas City, MO 64112')
+            .openPopup();
+    var deliveryArea = L.polygon([
+        [39.063267, -94.571687],
+        [38.991554, -94.575668],
+        [38.99328, -94.630396],
+        [39.025985, -94.630423],
+        [39.026252, -94.627748],
+        [39.027435, -94.627286],
+        [39.028952, -94.625849],
+        [39.032919, -94.625891],
+        [39.033536, -94.621235],
+        [39.052502, -94.621321],
+        [39.057201, -94.623038],
+        [39.061949, -94.625548],
+        [39.064881, -94.621772],
+        [39.064665, -94.613038]
+    ]).addTo(map);
+    deliveryArea.on('mouseover', function (e) {
+        e.target.setStyle({
+            color: '#666',
+            fillColor: 'yellow'
+        });
+    });
+    deliveryArea.on('mouseout', function (e) {
+        e.target.setStyle({
+            color: '#03f',
+            fillColor: '#03f'
+        });
+    });
+    var baseMaps = {
+        "OpenStreetMaps": osm,
+        "MapQuest OSM": mapQuestOsm,
+        "MapQuest Open Aerial": mapQuestOa,
+        "CartoDB Positron": cartoPositron,
+        "CartoDB Positron (no labels)": cartoPositronNoLabels,
+        "CartoDB Dark Matter": cartoDarkMatter,
+        "CartoDB Dark Matter (no labels)": cartoDarkMatterNoLabels,
+        "ESRI Streets": esriStreets,
+        "ESRI Topographic": esriTopographic,
+        "ESRI National Geographic": esriNationalGeographic,
+        "ESRI Imagery": esriImagery,
+        "ESRI Shaded Relief": esriShadedRelief,
+        "ESRI Terrain": esriTerrain,
+        "Stamen Toner": stamenToner,
+        "Stamen Toner Hybrid": stamenTonerHybrid,
+        "Stamen Toner Lite": stamenTonerLite,
+        "Stamen Terrain": stamenTerrain,
+        "Stamen Watercolor": stamenWatercolor,
+        "Google Satellite": googleSatellite,
+        "Google Roadmap": googleRoadmap,
+        "Google Hybrid": googleHybrid,
+        "Google Terrain": googleTerrain
+    };
+    L.control.layers(baseMaps).addTo(map);
+    map.fitBounds(deliveryArea.getBounds());
+</script>
+</body>
+</html>
