@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Introduction to Leaflet.js for Interactive Maps</title>
+
+    <meta name="description"
+          content="Introduction to Leaflet.js, a JavaScript library for mobile-friendly interactive maps. This session will contain step-by-step instructions on how to add a map to your website and a primer on using GeoJSON objects to encode geographic data.">
+    <meta name="author" content="Brice McIver">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <img style="float:left; border: none; box-shadow: none;background: inherit" src="images/keyhole-software.png"/>
+            <img style="float:right; border: none; box-shadow: none;background: inherit" src="images/nebraska_code.png"/>
+            <hr style="clear: both"/>
+            <h1>Leaflet.js</h1>
+
+            <h3>An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps</h3>
+            <hr />
+            <p>
+                <small>Created by <a href="http://bricemciver.com">Brice McIver</a></small>
+            </p>
+        </section>
+
+        <section>
+            <section>
+                <h2>History of web mapping</h2>
+                <dl>
+                    <dt>1993</dt>
+                    <dd>Xerox PARC Map Viewer</dd>
+                    <dd><img src="images/xerox_parc.jpg"/></dd>
+                </dl>
+                <aside class="notes">PARC stands for Palo Alto Research Center. </aside>
+            </section>
+            <section>
+                <h2>History of web mapping</h2>
+                <dl>
+                    <dt>1996</dt>
+                    <dd>MapQuest</dd>
+                    <dd><img src="images/mapquest.gif"/></dd>
+                </dl>
+                <aside class="notes">First web-mapping site aimed at consumers. Turn-by-turn directions.</aside>
+            </section>
+            <section>
+                <dl>
+                    <dt>1998</dt>
+                    <dd>Terraserver USA</dd>
+                    <dd><img src="images/terraserver.gif"/></dd>
+                </dl>
+                <aside class="notes">Joint project of Microsoft and Compaq to demonstrate scalability of Windows NT Server and SQL Server</aside>
+            </section>
+            <section>
+                <dl>
+                    <dt>2004</dt>
+                    <dd>OpenStreetMap</dd>
+                    <dd><img src="images/osmpda1.jpg"/></dd>
+                </dl>
+                <aside class="notes">1.6 million registered users. Wikipedia for maps.</aside>
+            </section>
+            <section>
+                <dl>
+                    <dt>Feb 2005</dt>
+                    <dd>Google Maps</dd>
+                    <dd><img src="images/google_maps.jpg"/></dd>
+                </dl>
+                <aside class="notes">Most used web mapping site. Mobile app is most used mobile app in world.</aside>
+            </section>
+            <section>
+                <dl>
+                    <dt>June 2005</dt>
+                    <dd>OpenLayers</dd>
+                    <dd><img src="images/gutenkarte.png"/></dd>
+                </dl>
+                <aside class="notes">The first widely used open source Javascript mapping library. Surpassed by Leaflet in usage.</aside>
+            </section>
+        </section>
+
+        <section>
+            <dl>
+                <dt><img alt="Leaflet" src="images/leaflet_logo.png"/></dt>
+                <dd class="fragment">First released in 2011</dd>
+                <dd class="fragment">Developed by Vladimir Agafonkin</dd>
+                <dd class="fragment"><img src="images/vladimir_agafonkin.jpg"/></dd>
+                <dd class="fragment">Used by <a href="https://www.flickr.com/">Flickr</a><span class="fragment">, <a
+                        href="http://foursquare.com/">Foursquare</a></span><span class="fragment">, <a
+                        href="http://pinterest.com/">Pinterest</a></span><span class="fragment">, <a
+                        href="https://www.craigslist.org/">craigslist</a></span><span class="fragment">, <a
+                        href="https://github.com/">GitHub</a></span></dd>
+            </dl>
+            <aside class="notes">Code size was a factor in popularity of Leaflet. Around 50KB vs just under 500KB for OpenLayers. Optimized for mobile.</aside>
+        </section>
+
+        <section>
+            <h2>What can you create with Leaflet?</h2>
+        </section>
+
+        <section>
+            <h3>Windyty</h3>
+            <iframe src="https://embed.windyty.com/?surface,wind,now,30.175,-97.950,4,,,message,ip" width="700" height="500" frameborder="0" marginwidth="0"
+                    marginheight="0"
+                    scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            <aside class="notes">Show the current wind speed and direction at various altitudes</aside>
+        </section>
+
+        <section>
+            <h3>In Flight</h3>
+            <iframe src="http://www.theguardian.com/world/ng-interactive/2014/aviation-100-years" width="700" height="500" frameborder="0" marginwidth="0"
+                    marginheight="0"
+                    scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            <aside class="notes">Produced for The Guardian by Kiln. Using live data from FlightStats. All commercial planes in the air.</aside>
+        </section>
+
+        <section>
+            <h3>NYC Taxis</h3>
+            <iframe src="http://nyctaxi.herokuapp.com/" width="700" height="500" frameborder="0" marginwidth="0"
+                    marginheight="0"
+                    scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            <aside class="notes">Taxi trip data from 2013, showing the activities of a single taxi on a single day. Data provided by the Taxi and Limousine Commission via a FOIL request.</aside>
+        </section>
+
+        <section>
+            <p>Other neat uses of Leaflet</p>
+            <a href="http://homepage.ntlworld.com/keir.clarke/mapsoftheyear.htm">Maps of the Year</a>
+        </section>
+
+        <section>
+            <section>
+                <iframe src="stage1/index.html" width="700" height="500" frameborder="0" marginwidth="0"
+                        marginheight="0"
+                        scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+            <section>
+                <pre><code data-trim style="font-size: 14px; line-height: 150%">&lt;html&gt;
+    &lt;head lang="en"&gt;
+        &lt;title&gt;Leaflet Demo&lt;/title&gt;
+        &lt;link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /&gt;
+        &lt;script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="map" style="height: 600px"&gt;&lt;/div&gt;
+        &lt;script&gt;
+            var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                osmAttrib = '&copy; &lt;a href="http://openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt;
+                    contributors',
+                osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+            var map = L.map('map').setView([39.034672, -94.587095], 15).addLayer(osm);
+            L.marker([39.034672, -94.587095]).addTo(map);
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h3>Markers</h3>
+            <div>Consist of an image and a shadow</div>
+<pre><code data-trim style="font-size: 14px; line-height: 150%">var myIcon = L.icon({
+    iconUrl: 'my-icon.png',
+    iconRetinaUrl: 'my-icon@2x.png',
+    iconSize: [38, 95], // size of the icon
+    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+    shadowUrl: 'my-icon-shadow.png',
+    shadowRetinaUrl: 'my-icon-shadow@2x.png',
+    shadowSize: [68, 95], // size of the shadow
+    shadowAnchor: [22, 94] // point of the shadow which will correspond to marker's location
+});</code></pre>
+            <p>Nicolas Mollet - <a href="https://mapicons.mapsmarker.com/">https://mapicons.mapsmarker.com/</a></p>
+        </section>
+
+        <section>
+            <section>
+                <iframe src="stage2/index.html" width="800" height="600" frameborder="0" marginwidth="0"
+                        marginheight="0"
+                        scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+            <section>
+                <h3>Popups</h3>
+                <pre><code class="javascript" data-trim style="font-size: 14px; line-height:150%;">L.marker([39.034672, -94.587095]).addTo(map)
+    .bindPopup('<span style="color: #b71e43; font-weight: bold">South Plaza</span><br/>' +
+               '<span style="color: #000000; font-weight:bold">816-561-5100</span><br/>' +
+               '5105 Main Street<br/>Kansas City, MO 64112')
+    .openPopup();</code></pre>
+
+                <aside class="notes">
+                    <p>Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:</p>
+                    <p>Try clicking on our objects. The bindPopup method attaches a popup with the specified HTML content to your marker so the popup appears when you click on the object, and the openPopup method (for markers only) immediately opens the attached popup.</p>
+                </aside>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <iframe src="stage3/index.html" width="800" height="600" frameborder="0" marginwidth="0"
+                        marginheight="0"
+                        scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+
+            <section>
+                <h3>Shapes</h3>
+                <pre><code class="javascript" data-trim style="font-size: 14px; line-height: 150%;">var deliveryArea = L.polygon([
+    [39.063267,-94.571687],
+    [38.991554,-94.575668],
+    [38.99328,-94.630396],
+    [39.025985,-94.630423],
+    [39.026252,-94.627748],
+    [39.027435,-94.627286],
+    [39.028952,-94.625849],
+    [39.032919,-94.625891],
+    [39.033536,-94.621235],
+    [39.052502,-94.621321],
+    [39.057201,-94.623038],
+    [39.061949,-94.625548],
+    [39.064881,-94.621772],
+    [39.064665,-94.613038]
+]).addTo(map);
+map.fitBounds(deliveryArea.getBounds());</code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Geometry Types</h2>
+            <ul>
+                <li>Polyline</li>
+                <li>MultiPolyline</li>
+                <li>Polygon</li>
+                <li>MultiPolygon</li>
+                <li>Rectangle</li>
+                <li>Circle</li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <iframe src="stage4/index.html" width="800" height="600" frameborder="0" marginwidth="0"
+                        marginheight="0"
+                        scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+            <section>
+                <pre><code class="javascript">deliveryArea.on('mouseover', function(e) {
+    e.target.setStyle({
+        color: '#666',
+        fillColor: 'yellow'
+    });
+});
+deliveryArea.on('mouseout', function(e) {
+    e.target.setStyle({
+        color: '#03f',
+        fillColor: '#03f'
+    });
+});</code></pre>
+            </section>
+            <section>
+                <h2>Styles</h2>
+                <ul>
+                    <li>stroke
+                        <ul>
+                            <li>color</li>
+                            <li>weight</li>
+                            <li>opacity</li>
+                        </ul>
+                    </li>
+                    <li>fill
+                        <ul>
+                            <li>fillColor</li>
+                            <li>fillOpacity</li>
+                        </ul>
+                    </li>
+                    <li>dashArray</li>
+                    <li>lineCap</li>
+                    <li>lineJoin</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Events</h2>
+                <ul>
+                    <li>click</li>
+                    <li>dblclick</li>
+                    <li>mousedown</li>
+                    <li>mouseover</li>
+                    <li>mouseout</li>
+                    <li>contextmenu</li>
+                    <li>add</li>
+                    <li>remove</li>
+                    <li>popupopen</li>
+                    <li>popupclose</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <iframe src="stage5/index.html" width="800" height="600" frameborder="0" marginwidth="0"
+                        marginheight="0"
+                        scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+            <section>
+                <h2>Tile Layer</h2>
+
+                <p>URL template is a string of the following form:</p>
+                <pre><code class="javascript">http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png</code></pre>
+                <ul>
+                    <li><code class="javascript">{s}</code> — one of the available subdomains</li>
+                    <li><code class="javascript">{z}</code> — zoom level</li>
+                    <li><code class="javascript">{x}</code> and <code class="javascript">{y}</code> — tile
+                        coordinates
+                    </li>
+                </ul>
+                <p>You can use custom keys in the template like this:</p>
+            <pre><code class="javascript" style="font-size: 18px">L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png',
+                {foo: 'bar'});</code></pre>
+            </section>
+            <section>
+                <h2>Example Tile Providers</h2>
+
+                <p>MapQuest</p>
+
+                <p>http://developer.mapquest.com/web/products/open/map</p>
+                <pre><code class="javascript" style="font-size: 14px; line-height: 140%">var mqSubdomains = [
+    'otile1','otile2', 'otile3', 'otile4' ];
+var mqTileUrlPrefix = window.location.protocol !== 'https:' ? 'http://{s}' : 'https://{s}-s';
+// OSM Tiles attribution
+var osmTileAttr = 'Map data © OpenStreetMap contributors, Tiles Courtesy of MapQuest';
+var osmMapOpt = {attribution: osmTileAttr,
+                 maxNativeZoom: 18,
+                 maxZoom: 21,
+                 subdomains: mqSubdomains};
+L.tileLayer(mqTileUrlPrefix+'.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',osmMapOpt);
+// Open Aerial Tiles attribution
+var oaTileAttr = 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, ' +
+                 'Farm Service Agency, Tiles Courtesy of MapQuest';
+var oaMapOpt = {attribution: oaTileAttr,
+                maxNativeZoom: 18,
+                maxZoom: 21,
+                subdomains: mqSubdomains};
+L.tileLayer(mqTileUrlPrefix+'/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',oaMapOpt);</code></pre>
+            </section>
+            <section>
+                <p>CartoDB</p>
+
+                <p>http://cartodb.com/basemaps/</p>
+                <pre><code class="javascript" style="font-size:15px">var httpPrefix = 'http://{s}.basemaps.cartocdn.com';
+var httpsPrefix = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net';
+var cdbTileUrlPrefix = window.location.protocol !== 'https:' ? httpPrefix : httpsPrefix;
+var cdbMapOpt = {attribution: '&copy; OpenStreetMap contributors, &copy; CartoDB'};
+L.tileLayer(cdbTileUrlPrefix+'/&lt;version&gt;/{z}/{x}/{y}.png',cdbMapOpt);</code></pre>
+                <ul>
+                    <li>Positron - light_all</li>
+                    <li>Positron (no labels) - light_nolabels</li>
+                    <li>Dark Matter - dark_all</li>
+                    <li>Dark Matter (no labels) - dark_nolabels</li>
+                </ul>
+            </section>
+            <section>
+                <p>ESRI</p>
+
+                <p>http://server.arcgisonline.com/ArcGIS/rest/services</p>
+                <ul>
+                    <li>Streets</li>
+                    <li>Topographic</li>
+                    <li>National Geographic</li>
+                    <li>Imagery</li>
+                    <li>Shaded Relief</li>
+                    <li>Terrain</li>
+                </ul>
+                <aside class="notes">ESRI stands for Environmental System Research Institute</aside>
+            </section>
+            <section>
+                <p>Stamen Design</p>
+
+                <p>http://maps.stamen.com</p>
+                <ul>
+                    <li>Toner</li>
+                    <li>Terrain</li>
+                    <li>Watercolor</li>
+                </ul>
+            </section>
+            <section>
+                <p>Mapbox</p>
+
+                <p>https://www.mapbox.com/developers/api/maps/</p>
+                <ul>
+                    <li>Requires an API key</li>
+                    <li>Free up to 50,000 views / month</li>
+                </ul>
+            </section>
+            <section>
+                <p>Plugins by Pabel Shramov</p>
+
+                <p>https://github.com/shramov/leaflet-plugins</p>
+                <ul>
+                    <li>Bing</li>
+                    <li>Google</li>
+                    <li>Yandex</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+            <iframe src="stage6/index.html" width="800" height="600" frameborder="0" marginwidth="0"
+                    marginheight="0"
+                    scrolling="no" style="max-width: 100%" allowfullscreen></iframe>
+            </section>
+            <section>
+                <h3>GeoJSON</h3>
+                <blockquote>GeoJSON is a format for encoding a variety of geographic data structures. A GeoJSON object may represent a geometry, a feature, or a collection of features. GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a geometry object and additional properties, and a feature collection represents a list of features.</blockquote>
+                <aside class="notes">
+                    <p>Leaflet supports all of the GeoJSON types above, but Features and FeatureCollections work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors.</p>
+                </aside>
+            </section>
+            <section>
+                <pre><code>{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [125.6, 10.1]
+    },
+    "properties": {
+        "name": "Dinagat Islands"
+    }
+}</code></pre>
+            </section>
+            <section>
+                <h3>style</h3>
+                <pre><code data-trim style="font-size: 15px; line-height: 150%">var myLines = [
+    {
+        "type": "LineString",
+        "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+    }, {
+        "type": "LineString",
+        "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+    }
+];
+
+var myStyle = {
+    "color": "#ff7800",
+    "weight": 5,
+    "opacity": 0.65
+};
+
+L.geoJson(myLines, { style: myStyle }).addTo(map);</code></pre>
+                <aside class="notes">
+                    The style option can be used to style features two different ways. First, we can pass a simple object that styles all paths (polylines and polygons) the same way:
+                </aside>
+            </section>
+            <section>
+                <pre><code data-trim style="font-size: 14px; line-height: 150%">var states = [{
+    "type": "Feature",
+    "properties": {"party": "Republican"},
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+            [-104.05, 48.99],
+            [-97.22,  48.98],
+            [-96.58,  45.94],
+            [-104.03, 45.94],
+            [-104.05, 48.99]
+        ]]
+    }
+}, {
+    "type": "Feature",
+    "properties": {"party": "Democrat"},
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+            [-109.05, 41.00],
+            [-102.06, 40.99],
+            [-102.03, 36.99],
+            [-109.04, 36.99],
+            [-109.05, 41.00]
+        ]]
+    }
+}];
+
+L.geoJson(states, {
+    style: function(feature) {
+        switch (feature.properties.party) {
+            case 'Republican': return {color: "red"};
+            case 'Democrat':   return {color: "blue"};
+        }
+    }
+}).addTo(map);</code></pre>
+                <aside class="notes">
+                    <p>Alternatively, we can pass a function that styles individual features based on their properties. In the example below we check the "party" property and style our polygons accordingly:</p>
+                </aside>
+            </section>
+            <section>
+                <h3>pointToLayer</h3>
+                <pre><code data-trim style="font-size: 14px; line-height: 150%">var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+L.geoJson(someGeojsonFeature, {
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
+}).addTo(map);</code></pre>
+                <aside class="notes">
+                    <p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a pointToLayer function in a GeoJSON options object when creating the GeoJSON layer. This function is passed a LatLng and should return an instance of ILayer, in this case likely a Marker or CircleMarker.Here we're using the pointToLayer option to create a CircleMarker</p>
+                    <p>We could also set the style property in this example — Leaflet is smart enough to apply styles to GeoJSON points if you create a vector layer like circle inside the pointToLayer function.</p>
+                </aside>
+            </section>
+            <section>
+                <h3>onEachFeature</h3>
+                <pre><code data-trim style="font-size: 14px; line-height: 150%">function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+    }
+}
+
+var geojsonFeature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+    }
+};
+
+L.geoJson(geojsonFeature, {
+    onEachFeature: onEachFeature
+}).addTo(map);</code></pre>
+                <aside class="notes">
+                    <p>The onEachFeature option is a function that gets called on each feature before adding it to a GeoJSON layer. A common reason to use this option is to attach a popup to features when they are clicked.</p>
+                </aside>
+            </section>
+            <section>
+                <h3>filter</h3>
+                <pre><code data-trim style="font-size: 14px; line-height: 150%">var someFeatures = [{
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "show_on_map": true
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+    }
+}, {
+    "type": "Feature",
+    "properties": {
+        "name": "Busch Field",
+        "show_on_map": false
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.98404, 39.74621]
+    }
+}];
+
+L.geoJson(someFeatures, {
+    filter: function(feature, layer) {
+        return feature.properties.show_on_map;
+    }
+}).addTo(map);</code></pre>
+                <aside class="notes">
+                    <p>The filter option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the filter option. This function gets called for each feature in your GeoJSON layer, and gets passed the feature and the layer. You can then utilise the values in the feature's properties to control the visibility by returning true or false.</p>
+                    <p>In the example below "Busch Field" will not be shown on the map.</p>
+                </aside>
+            </section>
+        </section>
+        <section>
+            <h3>Point</h3>
+            <p>Point coordinates are in x, y order (easting, northing for projected coordinates, longitude, latitude for geographic coordinates)</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{
+    "type": "Point",
+    "coordinates": [100.0, 0.0]
+}</code></pre>
+            <h3>LineString</h3>
+            <p>Coordinates of LineString are an array of positions</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{
+    "type": "LineString",
+    "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+}</code></pre>
+        </section>
+        <section>
+            <h3>Polygon</h3>
+            <p>Coordinates of a Polygon are an array of LinearRing coordinate arrays. The first element in the array represents the exterior ring. Any subsequent elements represent interior rings (or holes).</p>
+            <p><small>No holes</small></p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{ "type": "Polygon",
+  "coordinates": [
+      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
+  ]
+}</code></pre>
+            <p><small>With holes</small></p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{ "type": "Polygon",
+  "coordinates": [
+      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],
+      [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]
+  ]
+}</code></pre>
+        </section>
+        <section>
+            <h2>MultiPoint</h2>
+            <p>Coordinates of a MultiPoint are an array of positions</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{ "type": "MultiPoint",
+  "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+}</code></pre>
+            <h2>MultiLineString</h2>
+            <p>Coordinates of a MultiLineString are an array of LineString coordinate arrays:</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{ "type": "MultiLineString",
+  "coordinates": [
+      [ [100.0, 0.0], [101.0, 1.0] ],
+      [ [102.0, 2.0], [103.0, 3.0] ]
+  ]
+}</code></pre>
+        </section>
+        <section>
+            <h2>MultiPolygon</h2>
+            <p>Coordinates of a MultiPolygon are an array of Polygon coordinate arrays</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{
+    "type": "MultiPolygon",
+    "coordinates": [
+        [[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],
+        [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],
+        [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]
+    ]
+}</code></pre>
+        </section>
+        <section>
+            <h2>GeometryCollection</h2>
+            <p>Each element in the geometries array of a GeometryCollection is one of the geometry objects described above</p>
+            <pre><code data-trim style="font-size: 14px; line-height: 150%">{
+    "type": "GeometryCollection",
+    "geometries": [
+        {
+            "type": "Point",
+            "coordinates": [100.0, 0.0]
+        }, {
+            "type": "LineString",
+            "coordinates": [ [101.0, 0.0], [102.0, 1.0] ]
+        }
+    ]
+}</code></pre>
+        </section>
+        <section>
+            <h2>Making geojson</h2>
+            <p><a href="https://www.mapbox.com/tilemill/">Mapbox TileMill</a></p>
+            <p><a href="http://geojson.io/">geojson.io</a></p>
+        </section>
+        <section>
+            <h2><a href="http://leafletjs.com/plugins.html">Leaflet Plugins</a></h2>
+        </section>
+        <section>
+            <h2>Questions?</h2>
+
+            <img style="border:none" src="images/keyhole-software.png"/>
+            <h3>Brice McIver</h3>
+            <ul>
+                <li>@bricemciver</li>
+                <li>bricemciver on Github</li>
+                <li>bmciver@keyholesoftware.com</li>
+            </ul>
+            <p>Entire presentation with code samples available on Github.</p>
+            <a href="https://bricemciver.github.io/leaflet-demo/">leaflet-demo - https://bricemciver.github.io/leaflet-demo</a>
+            <a href="https://github.com/bricemciver/leaflet-demo/tree/gh-pages">leaflet-demo source - https://github.com/bricemciver/leaflet-demo/tree/gh-pages</a>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
+

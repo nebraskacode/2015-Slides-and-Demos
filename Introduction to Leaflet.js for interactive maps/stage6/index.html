@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Leaflet Demo - stage 6</title>
+    <link rel="stylesheet" href="../css/leaflet.css" />
+    <script src="../js/leaflet.js"></script>
+</head>
+<body>
+<div id="map" style="height: 600px"></div>
+<script src="pizza.js"></script>
+<script>
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+    var map = L.map('map', {
+        layers: [osm]
+    });
+
+    var bounds;
+
+    var geojson = L.geoJson(pizza, {
+        onEachFeature: function (feature, layer) {
+            if (bounds) {
+                bounds.extend(layer.getBounds());
+            } else {
+                bounds = layer.getBounds();
+            }
+            if (feature.properties && feature.properties.name) {
+                layer.bindPopup('<span style="color: #b71e43; font-weight: bold">' + feature.properties.name +
+                '</span><br /><span style="color: #000000; font-weight:bold">' + feature.properties.areaCode + '-' +
+                feature.properties.phonePrefix + '-' + feature.properties.phoneSuffix + '</span><br />' +
+                feature.properties.streetAddress + '<br />' + feature.properties.city + ', ' + feature.properties.state +
+                ' ' + feature.properties.zipCode);
+            }
+            layer.on('mouseover', function (e) {
+                e.target.setStyle({
+                    color: '#666',
+                    fillColor: 'yellow'
+                });
+            });
+            layer.on('mouseout', function (e) {
+                e.target.setStyle({
+                    color: '#03f',
+                    fillColor: '#03f'
+                });
+            });
+        }
+    }).addTo(map);
+    map.fitBounds(bounds);
+</script>
+</body>
+</html>
