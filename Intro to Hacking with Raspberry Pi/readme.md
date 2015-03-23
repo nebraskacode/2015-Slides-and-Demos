@@ -12,5 +12,5 @@ name dot com) if you have questions or want to show off any projects you've
 built! Feel free to let me know how I could make the talk better.
 
 I'll be giving a fresh, revised version of this talk at the 
-[Kansas City Developers Conference](http://www.kcdc.info/#!/). Hope to see you 
-there!
+[Kansas City Developers Conference](http://www.kcdc.info/#!/sessions/54d406cff82ef2090004b270).
+Hope to see you there!
