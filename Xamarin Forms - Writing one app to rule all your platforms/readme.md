@@ -19,4 +19,4 @@ The **Demo** folder includes the completed and working code for the demo app tha
 * You will need to *restore the NuGet packages* in order to run the solution. You can do this from inside VisualStudio or from the command line using the nuget tool:
       nuget.exe restore NCCXamarinDemo.sln
 
-* You will need at least a trial version of Xamarin for iOS or Android to build and run the respective projects.
+* You will need at least a trial version of Xamarin for Android to build and run the Android project.
