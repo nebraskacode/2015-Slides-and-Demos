@@ -1,0 +1,64 @@
+﻿@model MovieFanatic.Web.Models.MovieIndexViewModel
+@{
+    ViewBag.Title = "Movies To Watch";
+}
+
+<h2>Movies To Watch</h2>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Release Date</th>
+            <th>Overview</th>
+            <th>Average Rating</th>
+            <th>Genre</th>
+            <th>Actors</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.ReleaseDate.ToShortDateString()</td>
+                <td>@movie.Overview</td>
+                <td>@movie.AverageRating</td>
+                <td>
+                    <ul>
+                        @foreach (var genre in movie.Genres)
+                        {
+                            <li>@genre</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var actor in movie.Actors)
+                        {
+                            <li>@actor</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Edit", new { Id = movie.Id }, new { @class = "btn btn-default" })
+                    @if (!Model.IsShowingDeleted)
+                    {
+                        using (Html.BeginForm("Delete", null, new { movie.Id }))
+                        {
+                            <button type="submit" class="btn btn-danger">I Don't Want To Watch This</button>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("Restore", null, new { movie.Id }))
+                        {
+                            <button type="submit" class="btn btn-primary">I Do Want To Watch This</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

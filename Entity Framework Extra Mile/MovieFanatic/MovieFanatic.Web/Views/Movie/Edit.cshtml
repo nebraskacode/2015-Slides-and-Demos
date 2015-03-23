@@ -1,0 +1,30 @@
+﻿@model MovieFanatic.Web.Models.MovieDetailViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label for="Title">Title</label>
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Title)
+    </div>
+
+    <div class="form-group">
+        <label for="Overview">Overview</label>
+        @Html.TextAreaFor(model => model.Overview, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Overview)
+    </div>
+    
+    <div class="form-group">
+        <label for="StatusId">Status</label>
+        @Html.DropDownListFor(model => model.StatusId, Model.Statuses, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.StatusId)
+    </div>
+    <button type="submit" class="btn btn-default">Save</button>
+}

@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1BFB444F-C12B-4EA6-A920-EBC8A28B9805}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MovieFanatic.Data</RootNamespace>
+    <AssemblyName>MovieFanatic.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\Configurations\ActorConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\CharacterConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\EntityFrameworkConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\GenreConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\MovieConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\MovieGenreConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\MovieStatusConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\ProductionCompanyConfiguration.cs" />
+    <Compile Include="Extensions\Configurations\ProductionCompanyMovieConfiguration.cs" />
+    <Compile Include="DataContext.cs" />
+    <Compile Include="Extensions\Interceptors\SoftDeleteInterceptor.cs" />
+    <Compile Include="Extensions\Visitor\SoftDeleteQueryVisitor.cs" />
+    <Compile Include="MigrationsAuthenticator.cs" />
+    <Compile Include="Migrations\201405220245167_CreateMovie.cs" />
+    <Compile Include="Migrations\201405220245167_CreateMovie.Designer.cs">
+      <DependentUpon>201405220245167_CreateMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405230129030_AddedMoreFieldsToMovie.cs" />
+    <Compile Include="Migrations\201405230129030_AddedMoreFieldsToMovie.Designer.cs">
+      <DependentUpon>201405230129030_AddedMoreFieldsToMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405230424400_ShortenMovieTitle.cs" />
+    <Compile Include="Migrations\201405230424400_ShortenMovieTitle.Designer.cs">
+      <DependentUpon>201405230424400_ShortenMovieTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405230426383_AddMovieOverview.cs" />
+    <Compile Include="Migrations\201405230426383_AddMovieOverview.Designer.cs">
+      <DependentUpon>201405230426383_AddMovieOverview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405231249261_AddingGenre.cs" />
+    <Compile Include="Migrations\201405231249261_AddingGenre.Designer.cs">
+      <DependentUpon>201405231249261_AddingGenre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240107018_FixedMovieGenres.cs" />
+    <Compile Include="Migrations\201405240107018_FixedMovieGenres.Designer.cs">
+      <DependentUpon>201405240107018_FixedMovieGenres.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240129192_AddedProductionCompany.cs" />
+    <Compile Include="Migrations\201405240129192_AddedProductionCompany.Designer.cs">
+      <DependentUpon>201405240129192_AddedProductionCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240143054_FixedProductionCompany.cs" />
+    <Compile Include="Migrations\201405240143054_FixedProductionCompany.Designer.cs">
+      <DependentUpon>201405240143054_FixedProductionCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240225292_WidenedProductionCompanyName.cs" />
+    <Compile Include="Migrations\201405240225292_WidenedProductionCompanyName.Designer.cs">
+      <DependentUpon>201405240225292_WidenedProductionCompanyName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240259236_AddedCharactersAndActors.cs" />
+    <Compile Include="Migrations\201405240259236_AddedCharactersAndActors.Designer.cs">
+      <DependentUpon>201405240259236_AddedCharactersAndActors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240336591_WidenedCharacterName.cs" />
+    <Compile Include="Migrations\201405240336591_WidenedCharacterName.Designer.cs">
+      <DependentUpon>201405240336591_WidenedCharacterName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240418417_WidenedCharacterNameAgain.cs" />
+    <Compile Include="Migrations\201405240418417_WidenedCharacterNameAgain.Designer.cs">
+      <DependentUpon>201405240418417_WidenedCharacterNameAgain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405240446252_WidenedCharacterNameAgain2.cs" />
+    <Compile Include="Migrations\201405240446252_WidenedCharacterNameAgain2.Designer.cs">
+      <DependentUpon>201405240446252_WidenedCharacterNameAgain2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241217017_DefinedMoreFKs.cs" />
+    <Compile Include="Migrations\201405241217017_DefinedMoreFKs.Designer.cs">
+      <DependentUpon>201405241217017_DefinedMoreFKs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405290339324_AddedAverageRating.cs" />
+    <Compile Include="Migrations\201405290339324_AddedAverageRating.Designer.cs">
+      <DependentUpon>201405290339324_AddedAverageRating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405301917151_WatchedElementsOnMovie.cs" />
+    <Compile Include="Migrations\201405301917151_WatchedElementsOnMovie.Designer.cs">
+      <DependentUpon>201405301917151_WatchedElementsOnMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405310353179_AddingFabFive.cs" />
+    <Compile Include="Migrations\201405310353179_AddingFabFive.Designer.cs">
+      <DependentUpon>201405310353179_AddingFabFive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406010201040_ConfigureSoftDelete.cs" />
+    <Compile Include="Migrations\201406010201040_ConfigureSoftDelete.Designer.cs">
+      <DependentUpon>201406010201040_ConfigureSoftDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406020249271_DifferentSoftDeleteInterceptor.cs" />
+    <Compile Include="Migrations\201406020249271_DifferentSoftDeleteInterceptor.Designer.cs">
+      <DependentUpon>201406020249271_DifferentSoftDeleteInterceptor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406041549494_AddedMovieStatus.cs" />
+    <Compile Include="Migrations\201406041549494_AddedMovieStatus.Designer.cs">
+      <DependentUpon>201406041549494_AddedMovieStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503040117010_AddingGlobalFilter.cs" />
+    <Compile Include="Migrations\201503040117010_AddingGlobalFilter.Designer.cs">
+      <DependentUpon>201503040117010_AddingGlobalFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MovieFanatic.Domain\MovieFanatic.Domain.csproj">
+      <Project>{c49163bf-6286-4d07-af59-45e897e2da40}</Project>
+      <Name>MovieFanatic.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MovieFanatic.Utility\MovieFanatic.Utility.csproj">
+      <Project>{FA47CB64-AF18-4A21-AC2F-14F89ECD3839}</Project>
+      <Name>MovieFanatic.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405220245167_CreateMovie.resx">
+      <DependentUpon>201405220245167_CreateMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405230129030_AddedMoreFieldsToMovie.resx">
+      <DependentUpon>201405230129030_AddedMoreFieldsToMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405230424400_ShortenMovieTitle.resx">
+      <DependentUpon>201405230424400_ShortenMovieTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405230426383_AddMovieOverview.resx">
+      <DependentUpon>201405230426383_AddMovieOverview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405231249261_AddingGenre.resx">
+      <DependentUpon>201405231249261_AddingGenre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240107018_FixedMovieGenres.resx">
+      <DependentUpon>201405240107018_FixedMovieGenres.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240129192_AddedProductionCompany.resx">
+      <DependentUpon>201405240129192_AddedProductionCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240143054_FixedProductionCompany.resx">
+      <DependentUpon>201405240143054_FixedProductionCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240225292_WidenedProductionCompanyName.resx">
+      <DependentUpon>201405240225292_WidenedProductionCompanyName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240259236_AddedCharactersAndActors.resx">
+      <DependentUpon>201405240259236_AddedCharactersAndActors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240336591_WidenedCharacterName.resx">
+      <DependentUpon>201405240336591_WidenedCharacterName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240418417_WidenedCharacterNameAgain.resx">
+      <DependentUpon>201405240418417_WidenedCharacterNameAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405240446252_WidenedCharacterNameAgain2.resx">
+      <DependentUpon>201405240446252_WidenedCharacterNameAgain2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241217017_DefinedMoreFKs.resx">
+      <DependentUpon>201405241217017_DefinedMoreFKs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405290339324_AddedAverageRating.resx">
+      <DependentUpon>201405290339324_AddedAverageRating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405301917151_WatchedElementsOnMovie.resx">
+      <DependentUpon>201405301917151_WatchedElementsOnMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405310353179_AddingFabFive.resx">
+      <DependentUpon>201405310353179_AddingFabFive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406010201040_ConfigureSoftDelete.resx">
+      <DependentUpon>201406010201040_ConfigureSoftDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406020249271_DifferentSoftDeleteInterceptor.resx">
+      <DependentUpon>201406020249271_DifferentSoftDeleteInterceptor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406041549494_AddedMovieStatus.resx">
+      <DependentUpon>201406041549494_AddedMovieStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503040117010_AddingGlobalFilter.resx">
+      <DependentUpon>201503040117010_AddingGlobalFilter.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
