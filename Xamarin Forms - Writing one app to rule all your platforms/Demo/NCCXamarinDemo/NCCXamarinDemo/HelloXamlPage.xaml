@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NCCXamarinDemo.HelloXamlPage">
+	<StackLayout>
+		<Label x:Name="message"
+			 Text="This space left intentionally blank"
+			 Font="12,Bold" TextColor="Accent"
+			 VerticalOptions="CenterAndExpand"
+			 HorizontalOptions="CenterAndExpand" />
+		<Button Text="View message" Clicked="ViewMessageClicked" />
+	</StackLayout>
+</ContentPage>
